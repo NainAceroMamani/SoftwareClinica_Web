@@ -37,22 +37,23 @@ class ScheduleService implements ScheduleServiceInterface
                                'morning_start', 'morning_end',
                                'afternoon_start' , 'afternoon_end'
                            ]);
-        if(!$workDay) {
-            return [];
+        if($workDay) {    
+            $morningStart = new Carbon($workDay->morning_start);
+            $morningEnd   = new Carbon($workDay->morning_end);
+            
+            $morningIntervals = $this->getIntervals(
+                $workDay->morning_start, $workDay->morning_end , $date , $doctorId
+            );
+
+            $afternoonIntervals = $this->getIntervals(
+                $workDay->afternoon_start, $workDay->afternoon_end, $date , $doctorId
+            );
+            // dd($afternoonIntervals);
+        } else {
+            $morningIntervals = [];
+            $afternoonIntervals = [];
         }
 
-        $morningStart = new Carbon($workDay->morning_start);
-        $morningEnd   = new Carbon($workDay->morning_end);
-        
-        $morningIntervals = $this->getIntervals(
-            $workDay->morning_start, $workDay->morning_end , $date , $doctorId
-        );
-
-        $afternoonIntervals = $this->getIntervals(
-            $workDay->afternoon_start, $workDay->afternoon_end, $date , $doctorId
-        );
-        // dd($afternoonIntervals);
-        
         $data = [];
         $data['morning'] = $morningIntervals;
         $data['afternoon'] = $afternoonIntervals;
