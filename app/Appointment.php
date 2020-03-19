@@ -21,6 +21,16 @@ class Appointment extends Model
         'type'
     ];   
 
+    protected $hidden = [
+        // ocultamos la hora porque el accesor ya lo traera formateada
+        'specialty_id', 'doctor_id', 'scheduled_time'
+    ];
+
+    // para que en las consultas te traiga el accesor 
+    protected $appends = [
+        'scheduled_time_12'
+    ];
+
     public function specialty()
     {
         return $this->belongsTo(Specialty::class);
