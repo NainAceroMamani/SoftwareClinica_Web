@@ -22,7 +22,7 @@ class AppointmentController extends Controller
                     $query->select('id', 'name');
                 }
             ])
-            ->get(["id","description","specialty_id","doctor_id","scheduled_time","type","created_at","status"]);
+            ->get(["id","description","specialty_id","doctor_id","scheduled_date","scheduled_time","type","created_at","status"]);
         
             return $apointments;
     }
