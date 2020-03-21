@@ -29,11 +29,11 @@ class AppointmentController extends Controller
             return $apointments;
     }
 
-    public function store(){
+    public function store(Request $request){
         // Auth::guard('api')->id() => id de jwt
         $patientId = Auth::guard('api')->id();
         $appointment = Appointment::createFormPatient($request, $patientId);
-        $success = ($apointment)? true : false;
+        $success = ($appointment)? true : false;
         return compact('success');
     }
 }
