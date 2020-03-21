@@ -3,6 +3,7 @@
 // Api\AuthController@login -> el RouteservideProvider ya declaramos y lo buscara dentro de de controller/Api
 
 Route::post('/login', 'AuthController@login');
+Route::post('/register', 'AuthController@register');
 
 // JSON => Public Resourse
 Route::get('/specialties', 'SpecialtyController@index');
