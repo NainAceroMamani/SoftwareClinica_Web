@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Specialty;
 use App\User;
 use App\CancelledAppointment;
+use Illuminate\Http\Request;
 
 use Carbon\Carbon;
 
@@ -59,4 +60,21 @@ class Appointment extends Model
     {
         return $this->hasOne(CancelledAppointment::class);
     }
+
+    static public function createFormPatient(Request $request, $patientId) {
+        $data = $request->only([
+            'description',
+            'specialty_id',
+            'doctor_id',
+            'scheduled_date',
+            'scheduled_time',
+            'type'
+        ]);
+        $data['patient_id'] = $patientId;
+        $carbonTime = Carbon::createFromFormat('g:i A', $data['scheduled_time']);
+        $data['scheduled_time'] = $carbonTime->format('H:i:s');
+        // Appointment::create($data);
+        return self::create($data);
+    }
+    // $this::create($data); se ejecuta cuando se invoca de objeto pero se esta llamando appoitment::createFormPatien
 }
