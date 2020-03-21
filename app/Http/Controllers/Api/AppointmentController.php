@@ -29,7 +29,9 @@ class AppointmentController extends Controller
     }
 
     public function store(){
-        $success = Appointment::createFormPatient($request, auth()->id());
+        // Auth::guard('api')->id() => id de jwt
+        $patientId = Auth::guard('api')->id();
+        $success = Appointment::createFormPatient($request, $patientId);
 
         return compact('success');
     }
