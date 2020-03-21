@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\Http\Requests\StoreAppointment;
+use App\Appointment;
 
 class AppointmentController extends Controller
 {
@@ -31,8 +32,8 @@ class AppointmentController extends Controller
     public function store(){
         // Auth::guard('api')->id() => id de jwt
         $patientId = Auth::guard('api')->id();
-        $success = Appointment::createFormPatient($request, $patientId);
-
+        $appointment = Appointment::createFormPatient($request, $patientId);
+        $success = ($apointment)? true : false;
         return compact('success');
     }
 }
