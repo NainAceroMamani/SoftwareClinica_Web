@@ -24,6 +24,7 @@ class AppointmentController extends Controller
                     $query->select('id', 'name');
                 }
             ])
+            ->orderBy('id', 'des')
             ->get(["id","description","specialty_id","doctor_id","scheduled_date","scheduled_time","type","created_at","status"]);
         
             return $apointments;
