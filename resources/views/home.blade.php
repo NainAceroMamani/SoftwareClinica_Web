@@ -22,7 +22,7 @@
             <div class="card-header bg-transparent">
                 <div class="row align-items-center">
                 <div class="col">
-                    <h6 class="text-uppercase ls-1 mb-1">Notificación genral</h6>
+                    <h6 class="text-uppercase ls-1 mb-1">Notificación genral </h6>
                     <h2 class="mb-0">Enviar a todos los usuarios</h2>
                 </div>
                 </div>
