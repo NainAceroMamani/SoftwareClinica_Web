@@ -144,7 +144,7 @@ class AppointmentController extends Controller
     public function showCancelForm(Appointment $appointment)
     {
         $role = auth()->user()->role;
-        if($appointment->status == 'Confirmada' || $role == 'admin' || $role == 'doctor')
+        if($appointment->status == 'Confirmada')
         {
             return view('appointments.cancel', compact('appointment', 'role'));
         }
