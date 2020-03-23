@@ -92,4 +92,17 @@ class User extends Authenticatable
     {
         return $this->asDoctorAppointments()->where('status', 'Cancelada');
     }
+
+    public function sendFCM($message){
+
+        $notificationBuilder = new PayloadNotificationBuilder(config('app.name'));
+        $notificationBuilder->setBody($message)
+                            ->setSound('default');
+        
+        $notification = $notificationBuilder->build();
+        
+        return $groupResponse = FCM::sendToGroup([
+            $this->device_token // como estamos dentro del modelo user equivale a un this
+        ], null, $notification, null);
+    }
 }
