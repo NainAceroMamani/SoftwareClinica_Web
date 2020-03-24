@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $schedule->command('fcm:send')
-        ->everyMinute()
+        ->everyFiveMinutes()
         // contatenara al archivo los mensajs de error
         ->appendOutputTo($filePath);
 
