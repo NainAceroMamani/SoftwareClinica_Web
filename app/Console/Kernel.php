@@ -24,8 +24,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $filePath = storage_path('logs/fcm_send.log');
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('fcm:send')
+        ->everyFiveMinutes()
+        // contatenara al archivo los mensajs de error
+        ->appendOutputTo($filePath);
+
+        // luego ejecutar el comando crontab -e para linux editor /bin/nano 
+        // * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
     }
 
     /**

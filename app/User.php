@@ -97,6 +97,9 @@ class User extends Authenticatable
 
     public function sendFCM($message){
 
+        if(!$this->device_token)
+            return;
+
         $notificationBuilder = new PayloadNotificationBuilder(config('app.name'));
         $notificationBuilder->setBody($message)
                             ->setSound('default');
@@ -108,3 +111,4 @@ class User extends Authenticatable
         ], null, $notification, null);
     }
 }
+
