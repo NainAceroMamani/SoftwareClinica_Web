@@ -39,29 +39,36 @@ class SendNotification extends Command
      */
     public function handle()
     {
-        $this->info('Buscando citas médicas confirmadas en las próximas 24 horas. ');
+        $this->info('Buscando citas médicas: ');
         // un dia despues de la fecha actual y la hora que sea igual al dia anterior de la fecha de la cita
         // toDateString() -> para obtener el dia addDay() -> sumarle un dia 
         // hActual - 3m <= shceduled_time < hActual + 2m
         $now = Carbon::now();
 
+        // otra forma de inprimir para el error del info porque le pasamos array a este metodo si le devemos pasar array
+        $headers = ['id', 'scheduled_date', 'scheduled_time', 'patient_id'];
+
         // citas para mañana
-        $appointmentsTomorrow = $this->getAppointments24Hours($now);
+        $appointmentsTomorrow = $this->getAppointments24Hours($now->copy());
         
         // dd($appointments);                
 
         foreach ($appointmentsTomorrow as $appointment) {
-            $appointment->patient()->sendFCM('No olvides tu cita mañana a esta hora. ');
+            $appointment->patient->sendFCM('No olvides tu cita mañana a esta hora. ');
             $this->info('Mensaje FCM envaido 24h antes al paciente (ID): ' . $appointment->id);
         }
 
+        $this->table($headers, $appointmentsTomorrow->toArray());
+
         // citas dentro de una hora
-        $appointmentsNextHour = $this->getAppointments24NextHours($now);
+        $appointmentsNextHour = $this->getAppointments24NextHours($now->copy());
 
         foreach ($appointmentsNextHour as $appointment) {
-            $appointment->patient()->sendFCM('Tienes una cita en 1 hora. Te esperamos. ');
+            $appointment->patient->sendFCM('Tienes una cita en 1 hora. Te esperamos. ');
             $this->info('Mensaje FCM envaido faltando 1h al paciente (ID): ' . $appointment->id);
         }
+
+        $this->table($headers, $appointmentsNextHour->toArray());
     }
 
     private function getAppointments24Hours($now){
@@ -71,7 +78,7 @@ class SendNotification extends Command
             // copy para que no se modifique
             ->where('scheduled_time', '>=' , $now->copy()->subMinutes(3)->toTimeString())
             ->where('scheduled_time', '<' , $now->copy()->addMinutes(2)->toTimeString())
-            ->get(['id', 'scheduled_date', 'scheduled_time', 'patient_id'])->toArray();
+            ->get(['id', 'scheduled_date', 'scheduled_time', 'patient_id']);
     }
 
     private function getAppointments24NextHours($now){
@@ -81,7 +88,7 @@ class SendNotification extends Command
             // copy para que no se modifique
             ->where('scheduled_time', '>=' , $now->copy()->subMinutes(3)->toTimeString())
             ->where('scheduled_time', '<' , $now->copy()->addMinutes(2)->toTimeString())
-            ->get(['id', 'scheduled_date', 'scheduled_time', 'patient_id'])->toArray();
+            ->get(['id', 'scheduled_date', 'scheduled_time', 'patient_id']);
     }
 
     // para que este comando se ejecute App/Console/Kernel
