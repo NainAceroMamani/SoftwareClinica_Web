@@ -39,11 +39,13 @@ class SendNotification extends Command
      */
     public function handle()
     {
-        $this->info('Buscando citas médicas: ');
+        $now = Carbon::now();
+        $this->info('Buscando citas médicas: '. $now);
         // un dia despues de la fecha actual y la hora que sea igual al dia anterior de la fecha de la cita
         // toDateString() -> para obtener el dia addDay() -> sumarle un dia 
         // hActual - 3m <= shceduled_time < hActual + 2m
-        $now = Carbon::now();
+
+        // $now = Carbon::now();
 
         // otra forma de inprimir para el error del info porque le pasamos array a este metodo si le devemos pasar array
         $headers = ['id', 'scheduled_date', 'scheduled_time', 'patient_id'];
@@ -61,7 +63,7 @@ class SendNotification extends Command
 
         // citas dentro de una hora
         $appointmentsNextHour = $this->getAppointments24NextHours($now->copy());
-        
+
         $this->table($headers, $appointmentsNextHour->toArray());
 
         foreach ($appointmentsNextHour as $appointment) {
