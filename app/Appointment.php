@@ -28,6 +28,7 @@ class Appointment extends Model
     ];
 
     // para que en las consultas te traiga el accesor 
+    // ESTO SE AGREGARA SOLO CUANDO PONEMOS toArray
     protected $appends = [
         'scheduled_time_12'
     ];
